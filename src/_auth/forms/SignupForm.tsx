@@ -45,36 +45,43 @@ const SignupForm = () => {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof signupValidation>) {
-    const newUser = await createUserAccount(values);
+    try {
+      const newUser = await createUserAccount(values);
 
-    if (!newUser)
-      return toast({
-        variant: "destructive",
-        title: "Sign up failed, please try again.",
+      if (!newUser)
+        return toast({
+          variant: "destructive",
+          title: "Sign up failed, please try again. 1",
+        });
+
+      const session = signInAccount({
+        email: values.email,
+        password: values.password,
       });
 
-    const session = signInAccount({
-      email: values.email,
-      password: values.password,
-    });
+      if (!session)
+        return toast({
+          variant: "destructive",
+          title: "Sign in failed, please try again.",
+        });
 
-    if (!session)
-      return toast({
-        variant: "destructive",
-        title: "Sign in failed, please try again.",
-      });
+      const isLoggedIn = await checkAuthUser();
 
-    const isLoggedIn = await checkAuthUser();
+      if (isLoggedIn) {
+        form.reset();
 
-    if (isLoggedIn) {
-      form.reset();
+        navigate("/");
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Sign up failed, please try again. 2",
+        });
 
-      navigate("/");
-    } else
-      return toast({
-        variant: "destructive",
-        title: "Sign up failed, please try again.",
-      });
+        return;
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+    }
   }
 
   return (

@@ -16,7 +16,7 @@ export async function createUserAccount(user: INewUser) {
     const avatarUrl = avatars.getInitials(user.name);
 
     const newUser = await saveUserToDB({
-      accoundId: newAccount.$id,
+      accountId: newAccount.$id,
       name: newAccount.name,
       username: user.username,
       email: newAccount.email,
@@ -31,7 +31,7 @@ export async function createUserAccount(user: INewUser) {
 }
 
 export async function saveUserToDB(user: {
-  accoundId: string;
+  accountId: string;
   name: string;
   username?: string;
   email: string;
@@ -54,11 +54,14 @@ export async function saveUserToDB(user: {
 
 export async function signInAccount(user: { email: string; password: string }) {
   try {
-    const session = await account.createSession(user.email, user.password);
+    const session = await account.createEmailSession(
+      user.email,
+      user.password
+    );
 
     return session;
   } catch (error) {
-    console.error(error);
+    console.error("Error: ", error);
   }
 }
 
@@ -67,6 +70,9 @@ export async function getCurrentUser() {
     const currentAccount = await account.get();
 
     if (!currentAccount) throw new Error("No account found");
+
+    console.log("Current Account Id: ", currentAccount.$id);
+    console.log(typeof currentAccount.$id);
 
     const currentUser = await databases.listDocuments(
       appwriteConfig.databaseId,
@@ -78,6 +84,7 @@ export async function getCurrentUser() {
 
     return currentUser.documents[0];
   } catch (error) {
-    console.error(error);
+    console.error("Error: ", error);
+    return null;
   }
 }
