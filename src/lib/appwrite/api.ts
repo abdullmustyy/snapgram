@@ -54,10 +54,7 @@ export async function saveUserToDB(user: {
 
 export async function signInAccount(user: { email: string; password: string }) {
   try {
-    const session = await account.createEmailSession(
-      user.email,
-      user.password
-    );
+    const session = await account.createEmailSession(user.email, user.password);
 
     return session;
   } catch (error) {
@@ -70,9 +67,6 @@ export async function getCurrentUser() {
     const currentAccount = await account.get();
 
     if (!currentAccount) throw new Error("No account found");
-
-    console.log("Current Account Id: ", currentAccount.$id);
-    console.log(typeof currentAccount.$id);
 
     const currentUser = await databases.listDocuments(
       appwriteConfig.databaseId,
