@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signupValidation } from "@/lib/validation";
-import Loader from "@/components/ui/shared/Loader";
+import Loader from "@/components/shared/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import {
   useCreateUserAccount,
@@ -50,7 +50,7 @@ const SignupForm = () => {
       if (!newUser)
         return toast({
           variant: "destructive",
-          title: "Sign up failed, please try again. 1",
+          title: "Sign up failed, please try again.",
         });
 
       const session = signInAccount({
@@ -61,7 +61,7 @@ const SignupForm = () => {
       if (!session)
         return toast({
           variant: "destructive",
-          title: "Sign in failed, please try again.",
+          title: "Sign up failed, please try again.",
         });
 
       const isLoggedIn = await checkAuthUser();
@@ -73,7 +73,7 @@ const SignupForm = () => {
       } else {
         toast({
           variant: "destructive",
-          title: "Sign up failed, please try again. 2",
+          title: "Sign up failed, please try again.",
         });
 
         return;

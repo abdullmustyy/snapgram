@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signinValidation } from "@/lib/validation";
-import Loader from "@/components/ui/shared/Loader";
+import Loader from "@/components/shared/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignInAccount } from "@/lib/react-query/queriesAndMutations";
 import { useUserContext } from "@/context/AuthContext";
@@ -57,7 +57,7 @@ const SigninForm = () => {
       } else {
         toast({
           variant: "destructive",
-          title: "Sign up failed, please try again. 2",
+          title: "Sign in failed, please try again.",
         });
 
         return;
